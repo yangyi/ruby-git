@@ -25,8 +25,8 @@ module Git
       @logger = logger
     end
     
-    def init
-      command('init')
+    def init(bare = false)
+      command('init', bare ? "--bare" : [])
     end
     
     # tries to clone the given repo

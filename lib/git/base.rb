@@ -18,17 +18,19 @@ module Git
     # options:
     #  :repository
     #  :index_file
+    #  :bare
     #
     def self.init(working_dir, opts = {})
       opts = {
         :working_directory => working_dir,
-        :repository => File.join(working_dir, '.git')
+        :repository => opts[:bare] ? working_dir : File.join(working_dir, '.git')
       }.merge(opts)
       
       FileUtils.mkdir_p(opts[:working_directory]) if opts[:working_directory] && !File.directory?(opts[:working_directory])
+      opts[:working_directory] = nil if opts[:bare] # not using working directory if it is bare
       
       # run git_init there
-      Git::Lib.new(opts).init
+      Git::Lib.new(opts).init(opts[:bare])
        
       self.new(opts)
     end

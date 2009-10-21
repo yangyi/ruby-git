@@ -38,6 +38,14 @@ class TestInit < Test::Unit::TestCase
     end
   end
   
+  def test_git_init_bare
+    in_temp_dir do |path|
+      Git.init(path, :bare => true)
+      assert(File.directory?(path))
+      assert(File.exists?(File.join(path, "config")))
+    end
+  end
+  
   def test_git_init_remote_git
     in_temp_dir do |dir|
       assert(!File.exists?(File.join(dir, 'config')))
